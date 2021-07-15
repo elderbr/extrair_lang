@@ -16,8 +16,8 @@ import javax.swing.DefaultComboBoxModel;
  */
 public class Version extends DefaultComboBoxModel<String> {
 
-    private File fileVersionList = new File("C:\\Users\\elder\\AppData\\Roaming\\.minecraft\\assets\\indexes");
-    private File fileVersion;
+    private final String root = Utils.getPathRoot();
+    private File fileVersionList = new File(root.concat("AppData\\Roaming\\.minecraft\\assets\\indexes"));
 
     private int index;
     private String version;
@@ -42,11 +42,6 @@ public class Version extends DefaultComboBoxModel<String> {
     @Override
     public int getSize() {
         return listVersion.size();
-    }
-
-    @Override
-    public Object getSelectedItem() {
-        return version;
     }
 
 }

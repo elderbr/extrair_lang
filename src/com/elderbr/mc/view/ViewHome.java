@@ -7,6 +7,7 @@ package com.elderbr.mc.view;
 
 import com.elderbr.mc.model.Item;
 import com.elderbr.mc.util.Langs;
+import com.elderbr.mc.util.Utils;
 import com.elderbr.mc.util.Version;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -19,9 +20,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
@@ -30,7 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileSystemView;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.StringEscapeUtils;
 import org.json.simple.JSONObject;
@@ -56,12 +54,17 @@ public class ViewHome extends javax.swing.JFrame {
     private List<String> listMaterial;
     private int progInt;
 
+    private final String root = Utils.getPathRoot();
+
     /**
      * Creates new form ViewHome
      */
     public ViewHome() {
         initComponents();
-        
+
+        // PEGANDO O DIRETÓRIO PADRÃO DO SISTEMA
+        fileVersionPath = new File(root.concat("AppData\\Roaming\\.minecraft\\assets\\indexes\\"));
+
         try {// Adicionando o icone          
             Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/com/elderbr/mc/img/icon_smarthopper.png"));
             this.setIconImage(icon);
@@ -71,6 +74,9 @@ public class ViewHome extends javax.swing.JFrame {
 
         panelCarregamento.setVisible(false);
         cboxLang.setSelectedItem("pt_br");
+        
+        // VERSÕES
+        cboxVersion.setModel(new Version());
         cboxVersion.setSelectedIndex(cboxVersion.getItemCount() - 1);
     }
 
@@ -149,7 +155,6 @@ public class ViewHome extends javax.swing.JFrame {
             }
         });
 
-        cboxVersion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1.14", "1.15", "1.16", "1.17" }));
         cboxVersion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboxVersionActionPerformed(evt);
@@ -396,7 +401,7 @@ public class ViewHome extends javax.swing.JFrame {
                 // PESQUISANDO NO ARQUIVO SKINS SE TEM O MATERIAL
                 progInt = 0;
                 progresso.setValue(0);
-                progresso.setMaximum( (listSkins.size()+listMaterial.size()) );
+                progresso.setMaximum((listSkins.size() + listMaterial.size()));
                 map = new TreeMap<>();
                 String item;
                 String key, value;
@@ -418,7 +423,7 @@ public class ViewHome extends javax.swing.JFrame {
 
                             // SALVANDO NO MAPS
                             map.put(key, value);
-                            
+
                             // ADICIONANDO PROGRESSO
                             lbProgresso.setText("Comparando arquivos " + key);
                             progresso.setValue(progInt);
@@ -426,7 +431,7 @@ public class ViewHome extends javax.swing.JFrame {
                         }
                     }
                 }
-                progresso.setValue((listSkins.size()+listMaterial.size()));
+                progresso.setValue((listSkins.size() + listMaterial.size()));
 
                 // SALVO O ARQUIVO
                 progInt = 0;
@@ -437,24 +442,24 @@ public class ViewHome extends javax.swing.JFrame {
                         w.write(maps.getKey() + ": " + maps.getValue());
                         w.newLine();
                         w.flush();
-                        
+
                         // ADICIONANDO PROGRESSO
                         lbProgresso.setText("Salvando o arquivo " + maps.getKey());
                         progresso.setValue(progInt);
                         progInt++;
-                        
+
                     }
                     lbProgresso.setText("Arquivos Salvos");
-                    progresso.setValue(map.size()+1);
+                    progresso.setValue(map.size() + 1);
                 } catch (IOException ex) {
                     Logger.getLogger(ViewHome.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
                 // CRIANDO UMA PAUSA
-                try{
+                try {
                     Thread.sleep(3000);
-                }catch(InterruptedException e){
-                    
+                } catch (InterruptedException e) {
+
                 }
                 panelCarregamento.setVisible(false);
                 btnSalvar.setEnabled(false);
@@ -543,11 +548,15 @@ public class ViewHome extends javax.swing.JFrame {
             tfArquivo.setText("");
             fileLang = null;
             JOptionPane.showMessageDialog(rootPane, "Essa versão não foi aberta, você precisa abrir nessa versão para poder pegar as informações!!!");
-        } catch (IOException ex) {
+        } catch (IOException | NullPointerException ex) {
             System.err.println("Arquivo não encontrado");
         } catch (ParseException ex) {
             Logger.getLogger(Version.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }   
+    }
+    
+    public String getRootPath(){
+        return root;
+    }
 
 }

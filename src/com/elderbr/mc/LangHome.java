@@ -18,6 +18,7 @@ import java.lang.invoke.MethodHandles;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Properties;
+import javax.swing.filechooser.FileSystemView;
 import org.bukkit.Material;
 
 /**
@@ -36,42 +37,9 @@ public class LangHome {
     public LangHome() {
 
         ViewHome home = new ViewHome();
-        home.setVisible(true);
-
+        home.setVisible(true);  
+        
        
-    }
-    
-    public void a(){
-         try {
-            list = new ArrayList<>();
-            for (Material material : Material.values()) {
-                item = new Item();
-                if (material.isItem() && !material.isAir()) {
-                    item.parse(material);
-                    if (!item.toString().contains("spawn egg")) {
-                        list.add(material.getKey().getKey()+": "+item.toString());
-                    }
-                }
-            }
-        } catch (Exception e) {
-            System.err.println("Erro >> " + e.getMessage());
-        }
-
-        Collections.sort(list);
-
-        try (BufferedWriter w = Files.newBufferedWriter(new File("C:\\Users\\elder\\Documents\\Minecraft\\lang", "item.yml").toPath(), StandardCharsets.UTF_8)) {
-            int row = 1;
-            for (String item : list) {
-                w.write(item);
-                w.newLine();
-                w.flush();
-                System.out.println("item >> " + item);
-                row++;
-            }
-        } catch (IOException e) {
-            System.err.println("Erro ao salvar os itens!");
-        }
-
-    }
+    } 
 
 }
