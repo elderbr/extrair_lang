@@ -41,7 +41,7 @@ import org.json.simple.parser.ParseException;
  */
 public class ViewHome extends javax.swing.JFrame {
 
-    private File fileVersionPath = new File("C:\\Users\\elder\\AppData\\Roaming\\.minecraft\\assets\\indexes\\");
+    private File fileVersionPath;
     private File fileVersion;
     private File fileLang;
 
@@ -356,12 +356,17 @@ public class ViewHome extends javax.swing.JFrame {
         panelCarregamento.setVisible(true);
 
         // Caminho do arquivo
-        fileSkins = new File("C:\\Users\\elder\\AppData\\Roaming\\.minecraft\\assets\\objects" + File.separator + pastaLang.substring(0, 2) + File.separator + pastaLang);
+        fileSkins = new File(root.concat("AppData\\Roaming\\.minecraft\\assets\\objects") + File.separator + pastaLang.substring(0, 2) + File.separator + pastaLang);
 
         // PROGRESSO DO SALVAMENTO DO ARQUIVO
         progresso.setValue(0);
         progresso.setMaximum(6000);
         progInt = 1;
+
+        
+        btnSalvar.setEnabled(false);
+        tfArquivo.setText("");
+        cboxLang.requestFocus();
 
         new Thread() {
             @Override
@@ -396,7 +401,7 @@ public class ViewHome extends javax.swing.JFrame {
                         }
                     }
                 } catch (Exception e) {
-
+                    System.err.println("Erro ao percorrer os materiais!\n"+ e);
                 }
                 progresso.setValue(6001);
 
@@ -439,7 +444,7 @@ public class ViewHome extends javax.swing.JFrame {
                 progInt = 0;
                 progresso.setValue(0);
                 progresso.setMaximum(map.size());
-                try (BufferedWriter w = Files.newBufferedWriter(new File(fileLang.getAbsolutePath(), cboxLang.getSelectedItem().toString() + ".yml").toPath(), StandardCharsets.UTF_8)) {
+                try (BufferedWriter w = Files.newBufferedWriter(new File(fileLang.getAbsolutePath(), cboxLang.getSelectedItem().toString() + "_" + cboxVersion.getSelectedItem() + ".yml").toPath(), StandardCharsets.UTF_8)) {
                     for (Map.Entry<String, String> maps : map.entrySet()) {
                         w.write(maps.getKey() + ": " + maps.getValue());
                         w.newLine();
@@ -464,10 +469,6 @@ public class ViewHome extends javax.swing.JFrame {
 
                 }
                 panelCarregamento.setVisible(false);
-                btnSalvar.setEnabled(false);
-                tfArquivo.setText("");
-                cboxLang.requestFocus();
-
             }
         }.start();
 
@@ -549,7 +550,12 @@ public class ViewHome extends javax.swing.JFrame {
             if (version > 13) {
                 lang = "minecraft/lang/".concat(cboxLang.getSelectedItem().toString().concat(".json"));
             } else {
-                lang = "minecraft/lang/".concat(cboxLang.getSelectedItem().toString().concat(".lang"));
+                String[] langA = cboxLang.getSelectedItem().toString().split("_");
+                if (version == 12) {
+                    lang = "minecraft/lang/".concat(langA[0] + "_" + langA[1]).concat(".lang");
+                } else {
+                    lang = "minecraft/lang/".concat(langA[0] + "_" + langA[1].toUpperCase()).concat(".lang");
+                }
             }
             JSONObject jsonhash = (JSONObject) parser.parse(jsonLang.get(lang).toString());
             pastaLang = jsonhash.get("hash").toString();
