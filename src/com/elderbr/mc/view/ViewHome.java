@@ -8,6 +8,8 @@ package com.elderbr.mc.view;
 import com.elderbr.mc.model.Item;
 import com.elderbr.mc.util.Langs;
 import com.elderbr.mc.util.Version;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -59,6 +61,13 @@ public class ViewHome extends javax.swing.JFrame {
      */
     public ViewHome() {
         initComponents();
+        
+        try {// Adicionando o icone          
+            Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/com/elderbr/mc/img/icon_smarthopper.png"));
+            this.setIconImage(icon);
+        } catch (Exception e) {
+            System.err.println("Erro ao carregar o icon!");
+        }
 
         panelCarregamento.setVisible(false);
         cboxLang.setSelectedItem("pt_br");
@@ -93,7 +102,7 @@ public class ViewHome extends javax.swing.JFrame {
         progresso = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Pegar o lang dos itens Minecraft");
+        setTitle("Extrair Lang Minecraft");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
