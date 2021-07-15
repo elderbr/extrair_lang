@@ -7,6 +7,10 @@ Ele gera um arquivo ***.yml*** com todos os itens, basta colocar na pasta **lang
 Se você usa outro programa que precisa da tradução, você pode usar o sistema para consegue os arquivos.
 
 ---
+
+### Link para o SmartHopper ###
+[smarthopper](https://www.spigotmc.org/resources/separador-inteligente.73646/)
+---
 ### Tela da aplicação: ###
 
 
