@@ -55,6 +55,8 @@ public class ViewHome extends javax.swing.JFrame {
     private int progInt;
 
     private final String root = Utils.getPathRoot();
+    private double version;
+    private String lang;
 
     /**
      * Creates new form ViewHome
@@ -74,10 +76,10 @@ public class ViewHome extends javax.swing.JFrame {
 
         panelCarregamento.setVisible(false);
         cboxLang.setSelectedItem("pt_br");
-        
+
         // VERSÕES
         cboxVersion.setModel(new Version());
-        cboxVersion.setSelectedIndex(cboxVersion.getItemCount() - 1);
+        cboxVersion.setSelectedIndex(0);
     }
 
     /**
@@ -535,11 +537,20 @@ public class ViewHome extends javax.swing.JFrame {
         pastaLang = null;
 
         try {
+
+            // PEGANDO A VERSÃO ESCOLHIDA
+            version = Utils.Version(cboxVersion.getSelectedItem().toString());
+
             fileVersion = new File(fileVersionPath.getAbsolutePath(), cboxVersion.getSelectedItem().toString().concat(".json"));
             JSONParser parser = new JSONParser();
             JSONObject jsonPric = (JSONObject) parser.parse(new FileReader(fileVersion));
             JSONObject jsonLang = (JSONObject) parser.parse(jsonPric.get("objects").toString());
-            String lang = "minecraft/lang/".concat(cboxLang.getSelectedItem().toString().concat(".json")).toString();
+            // VERIFICA O TIPO DA VERSÃO MAIOR QUE 14 TEM EXTENSÃO JSON
+            if (version > 13) {
+                lang = "minecraft/lang/".concat(cboxLang.getSelectedItem().toString().concat(".json"));
+            } else {
+                lang = "minecraft/lang/".concat(cboxLang.getSelectedItem().toString().concat(".lang"));
+            }
             JSONObject jsonhash = (JSONObject) parser.parse(jsonLang.get(lang).toString());
             pastaLang = jsonhash.get("hash").toString();
             System.out.println("hash >> " + pastaLang);
@@ -549,13 +560,14 @@ public class ViewHome extends javax.swing.JFrame {
             fileLang = null;
             JOptionPane.showMessageDialog(rootPane, "Essa versão não foi aberta, você precisa abrir nessa versão para poder pegar as informações!!!");
         } catch (IOException | NullPointerException ex) {
-            System.err.println("Arquivo não encontrado");
+            System.err.println("Arquivo não encontrado: " + ex.getMessage());
+            Logger.getLogger(Version.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
             Logger.getLogger(Version.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public String getRootPath(){
+
+    public String getRootPath() {
         return root;
     }
 

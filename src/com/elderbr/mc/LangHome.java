@@ -35,7 +35,7 @@ public class LangHome {
     }
 
     public LangHome() {
-
+        
         ViewHome home = new ViewHome();
         home.setVisible(true);  
         
