@@ -35,6 +35,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+
 /**
  *
  * @author elder
@@ -79,7 +80,8 @@ public class ViewHome extends javax.swing.JFrame {
 
         // VERSÕES
         cboxVersion.setModel(new Version());
-        cboxVersion.setSelectedIndex(0);
+        cboxVersion.setSelectedIndex(0);       
+        
     }
 
     /**
