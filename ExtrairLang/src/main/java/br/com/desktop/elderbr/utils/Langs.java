@@ -4,6 +4,12 @@
  */
 package br.com.desktop.elderbr.utils;
 
+import br.com.desktop.elderbr.interfaces.VGlobal;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 
 /**
@@ -15,36 +21,40 @@ public class Langs extends DefaultComboBoxModel<String> {
     private String lang = null;
 
     // TODOS OS CÓDIGOS DE LANG DISPONIVÉL PARA A VERSÃO 1.17
-    private final String[] langs = new String[]{"af_za", "ar_sa", "bg_bg", "ca_es",
-        "cs_cz", "cy_gb", "da_dk", "de_de", "el_gr", "en_au", "en_ca", "en_gb",
-        "en_pt", "eo_uy", "es_ar", "es_es", "es_mx", "es_uy", "es_ve", "et_ee",
-        "eu_es", "fa_ir", "fil_ph", "fi_fi", "fr_ca", "fr_fr", "ga_ie", "gl_es",
-        "he_il", "hi_in", "hr_hr", "hu_hu", "hy_am", "id_id", "is_is", "it_it",
-        "ja_jp", "ka_ge", "ko_kr", "kw_gb", "la_la", "lb_lu", "lt_lt", "lv_lv",
-        "ms_my", "mt_mt", "nl_nl", "nn_no", "no_no", "oc_fr", "pl_pl", "pt_br",
-        "pt_pt", "qya_aa", "ro_ro", "ru_ru", "sk_sk", "sl_si", "sr_sp", "sv_se",
-        "th_th", "tlh_aa", "tr_tr", "uk_ua", "vi_vn", "zh_cn", "zh_tw"};
+    private List<String>listLang;
+    private File fileVersion;
 
     public Langs() {
+        try {
+            listLang = new ArrayList<>();
+            fileVersion = new File(VGlobal.LANG_INDEX, "1.18.json");
+            try (BufferedReader br = new BufferedReader(new FileReader(fileVersion.getAbsoluteFile()))) {
+                while ((lang = br.readLine()) != null) {
+                    if (lang.contains("realms/lang/")) {
+                        listLang.add(lang.replaceAll("\"realms/lang/", "").replaceAll("[\":{]", "").replace(".json", "").trim());
+                    }
+                }
+            } catch (Exception ex) {
+                System.out.println("Erro ao ler a languagem: \nErro: " + ex.getMessage());
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao ler a languagem: \nErro: " + e.getMessage());
+        }        
     }
 
     @Override
     public String getElementAt(int index) {
-        lang = langs[index];
+        lang = listLang.get(index);
         return lang;
     }
 
     @Override
     public int getSize() {
-        return langs.length;
+        return listLang.size();
     }
-
 
     @Override
-    public String toString() {        
+    public String toString() {
         return lang;
     }
-    
-    
-
 }

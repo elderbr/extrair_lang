@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -24,7 +25,10 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Server;
+import org.bukkit.entity.Player;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -397,7 +401,7 @@ public class HomeView extends javax.swing.JFrame {
                     for (Map.Entry<String, String> maps : map.entrySet()) {
                         w.write(maps.getKey().trim() + ": " + maps.getValue().trim());
                         // COMPARA SE É A ÚLTIMA LINHA
-                        if((progInt+1)<map.size()){
+                        if ((progInt + 1) < map.size()) {
                             w.newLine();
                         }
                         w.flush();
