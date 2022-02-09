@@ -1,6 +1,6 @@
 # Extrair Lang
 
-**Extrair Lang - Extrai a linguagem desejada para ser usada no**​ ***SmartHopper***
+## Extrair Lang - Extrai a linguagem desejada para ser usada no ***SmartHopper*** é usado em computador onde tem o Minecraft instalado, o lang é extraido do jogo.
 
 Se você quiser mais opções de tradução para colocar no ***SmartHopper*** essse sistema vai ajudar a extrair o linguagem desejada, basta escolher o código da linguagem.
 Ele gera um arquivo ***.yml*** com todos os itens, basta colocar na pasta **lang** e reiniciar o servidor.
