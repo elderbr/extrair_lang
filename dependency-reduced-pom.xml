@@ -18,7 +18,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>br.com.desktop.elderbr.view.HomeView</mainClass>
+                  <mainClass>view.HomeView</mainClass>
                 </transformer>
               </transformers>
             </configuration>
