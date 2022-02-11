@@ -56,17 +56,12 @@ public class HomeView extends javax.swing.JFrame {
     public HomeView() {
         initComponents();
 
-        try {// Adicionando o icone          
-            String curDir = System.getProperty("user.dir");
-            System.out.println(curDir);
-            Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("br/com/desktop/elderbr/img/icon_smarthopper.png"));
+        try {// Adicionando o icone            
+            Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("br/com/desktop/elderbr/img/icon_smarthopper.png").toString());
             this.setIconImage(icon);
         } catch (Exception e) {
             System.err.println("Erro ao carregar o icon!");
         }
-        
-        System.out.println(getClass().getResource("br/com/desktop/elderbr/img"));
-        
 
         // PEGANDO O DIRETÓRIO PADRÃO DO SISTEMA
         fileVersionPath = new File(ROOT.concat("AppData\\Roaming\\.minecraft\\assets\\indexes\\"));
