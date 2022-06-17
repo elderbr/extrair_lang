@@ -21,6 +21,5 @@ Se você usa outro programa que precisa da tradução, você pode usar o sistema
 ---
 >### Como usar:
 >1. Escolha o código da linguagem desejada, depois a versão.
->Para conseguir extrair a linguagem o jogo, precisa ter aberto pelo menos uma vez a versão escolhida. Caso contrario retornará um erro.
 >2. No botão ***Abrir*** escolha a pasta onde deseja salvar a extração. Após ter escolhido a local o botão ***Salvar*** será liberado.
 >3. Ao clicar no ***Botão Salvar*** vai ser exibido o carregando, pronto o arquivo está salvo com o nome do código escolhido. Nesse exemplo usamos o **pt_br** o arquivo vai ser salvo ***pt_br.yml*** na pasta escolhida.
