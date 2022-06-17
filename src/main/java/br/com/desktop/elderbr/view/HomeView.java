@@ -35,11 +35,7 @@ import org.json.simple.parser.ParseException;
  */
 public class HomeView extends javax.swing.JFrame {
 
-    private File fileVersionPath;
-    private File fileVersion;
-    private File fileLang;
-
-    private String pastaLang = null;
+       
     private SortedMap<String, String> map;
     private File fileSkins;
     private List<String> listSkins;
@@ -47,11 +43,13 @@ public class HomeView extends javax.swing.JFrame {
     private Item item;
     private List<String> listMaterial;
     private int progInt;
-
-    private final String ROOT = Caminho.getPathRoot();
-
-    private double version;
+    
     private String lang;
+    private String hash;
+    private String hashPath;
+    
+    private File saveLang = null;
+    private File langFile;
 
     public HomeView() {
         initComponents();
@@ -63,13 +61,10 @@ public class HomeView extends javax.swing.JFrame {
             System.err.println("Erro ao carregar o icon!");
         }
 
-        // PEGANDO O DIRETÓRIO PADRÃO DO SISTEMA
-        fileVersionPath = new File(ROOT.concat("AppData\\Roaming\\.minecraft\\assets\\indexes\\"));
-
         progresso.setVisible(false);
 
         cboxLang.setModel(new Langs());
-        cboxLang.setSelectedItem("pt_br");
+        cboxLang.setSelectedItem("pt_BR");
 
         // VERSÕES
         cboxVersion.setModel(new Version());
@@ -276,37 +271,34 @@ public class HomeView extends javax.swing.JFrame {
     }//GEN-LAST:event_cboxLangActionPerformed
 
     private void cboxVersionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxVersionActionPerformed
-        if (evt.getModifiers() < 1) {
+        if (evt.getModifiers() < 0) {
             return;
         }
         arquivo();
     }//GEN-LAST:event_cboxVersionActionPerformed
 
     private void btnAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirActionPerformed
-        fileLang = null;
+        saveLang = null;
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.getCurrentDirectory();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         fileChooser.setVisible(true);
         int response = fileChooser.showOpenDialog(rootPane);
         if (response == JFileChooser.APPROVE_OPTION) {
-            fileLang = fileChooser.getSelectedFile();
-            tfArquivo.setText(fileLang.getAbsolutePath());
+            saveLang = fileChooser.getSelectedFile();
+            tfArquivo.setText(saveLang.getAbsolutePath());
             btnSalvar.setEnabled(true);
             arquivo();
         } else {
             btnSalvar.setEnabled(false);
             tfArquivo.setText("");
-            fileLang = null;
+            saveLang = null;
         }
     }//GEN-LAST:event_btnAbrirActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         // PAINEL DE CARREGAMENTO VISIVEL
         progresso.setVisible(true);
-
-        // Caminho do arquivo
-        fileSkins = new File(ROOT.concat("AppData\\Roaming\\.minecraft\\assets\\objects") + File.separator + pastaLang.substring(0, 2) + File.separator + pastaLang);
 
         // PROGRESSO DO SALVAMENTO DO ARQUIVO
         progresso.setValue(0);
@@ -324,7 +316,7 @@ public class HomeView extends javax.swing.JFrame {
                 // Lista de texto do skins                
                 listSkins = new ArrayList<>();
                 String txt = null;
-                try (BufferedReader ler = Files.newBufferedReader(fileSkins.toPath(), StandardCharsets.UTF_8)) {
+                try (BufferedReader ler = Files.newBufferedReader(langFile.toPath(), StandardCharsets.UTF_8)) {
                     while ((txt = ler.readLine()) != null) {
                         listSkins.add(txt.trim());
 
@@ -393,7 +385,7 @@ public class HomeView extends javax.swing.JFrame {
                 progInt = 0;
                 progresso.setValue(0);
                 progresso.setMaximum(map.size());
-                try (BufferedWriter w = Files.newBufferedWriter(new File(fileLang.getAbsolutePath(), cboxLang.getSelectedItem().toString() + "_" + cboxVersion.getSelectedItem() + ".yml").toPath(), StandardCharsets.UTF_8)) {
+                try (BufferedWriter w = Files.newBufferedWriter(new File(saveLang.getAbsolutePath(), cboxLang.getSelectedItem().toString() + "_" + cboxVersion.getSelectedItem() + ".yml").toPath(), StandardCharsets.UTF_8)) {
                     for (Map.Entry<String, String> maps : map.entrySet()) {
                         w.write(maps.getKey().trim() + ": " + maps.getValue().trim());
                         // COMPARA SE É A ÚLTIMA LINHA
@@ -483,42 +475,45 @@ public class HomeView extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void arquivo() {
-
-        pastaLang = null;
-
-        try {
-
-            // PEGANDO A VERSÃO ESCOLHIDA
-            version = Caminho.Version(cboxVersion.getSelectedItem().toString());
+        try {            
+            File fileVersion = new File(Caminho.fileIndexes, cboxVersion.getSelectedItem().toString().concat(".json"));
+            JSONParser parser = new JSONParser();            
             
-            fileVersion = new File(fileVersionPath.getAbsolutePath(), cboxVersion.getSelectedItem().toString().concat(".json"));
-            JSONParser parser = new JSONParser();
-            JSONObject jsonPric = (JSONObject) parser.parse(new FileReader(fileVersion));
+            // Abrindo o arquivo escolhido
+            JSONObject jsonPric = (JSONObject) parser.parse(new FileReader(fileVersion.getAbsoluteFile()));
+            
+            // Lendo o arquivo da versão escolhida
             JSONObject jsonLang = (JSONObject) parser.parse(jsonPric.get("objects").toString());            
-            // VERIFICA O TIPO DA VERSÃO MAIOR QUE 14 TEM EXTENSÃO JSON
-            if (version > 13) {
-                lang = "minecraft/lang/".concat(cboxLang.getSelectedItem().toString().concat(".json"));
-            } else {
-                String[] langA = cboxLang.getSelectedItem().toString().split("_");
-                if (version == 12) {
-                    lang = "minecraft/lang/".concat(langA[0] + "_" + langA[1]).concat(".lang");
-                } else {
-                    lang = "minecraft/lang/".concat(langA[0] + "_" + langA[1].toUpperCase()).concat(".lang");
-                }
-            }
-            JSONObject jsonhash = (JSONObject) parser.parse(jsonLang.get(lang).toString());
-            pastaLang = jsonhash.get("hash").toString();
-            System.out.println("hash >> " + pastaLang);
+            
+            // Setando a linguagem
+            lang = "minecraft/lang/".concat(cboxLang.getSelectedItem().toString().concat(".json").toLowerCase());
+            // Selecionando a liguagem no documento
+            JSONObject hashJson = (JSONObject) parser.parse(jsonLang.get(lang).toString());
+            // Pega o codigo da linguagem
+            hash = hashJson.get("hash").toString();
+            
+            // Nome da pasta onde está o tradução
+            hashPath = hash.substring(0,2);
+            
+            langFile = new File(Caminho.fileObjects+File.separator+hashPath, hash);
+            
         } catch (FileNotFoundException ex) {
             btnSalvar.setEnabled(false);
-            lbProgresso.setText("");
-            fileLang = null;
+            lbProgresso.setText("");        
+            saveLang = null;
             JOptionPane.showMessageDialog(rootPane, "Essa versão não foi aberta, você precisa abrir nessa versão para poder pegar as informações!!!");
         } catch (IOException | NullPointerException ex) {
             System.err.println("Arquivo não encontrado: " + ex.getMessage());
             Logger.getLogger(Version.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
             Logger.getLogger(Version.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(saveLang == null){
+            btnSalvar.setEnabled(false);
+            lbProgresso.setText("");
+        }else{
+            btnSalvar.setEnabled(true);
+            lbProgresso.setText("");
         }
     }
 

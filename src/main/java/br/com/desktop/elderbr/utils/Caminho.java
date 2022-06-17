@@ -7,12 +7,21 @@ import javax.swing.filechooser.FileSystemView;
  *
  * @author User
  */
-public class Caminho {
-    public static String getPathRoot() {
-        // PEGANDO O DIRETÓRIO PADRÃO DO SISTEMA
+public interface Caminho {
+    // PEGANDO O DIRETÓRIO PADRÃO DO SISTEMA
+    public static String getPathRoot() {        
         File fileRoot = FileSystemView.getFileSystemView().getRoots()[0];
         return fileRoot.getAbsolutePath().substring(0, fileRoot.getAbsolutePath().lastIndexOf("\\") + 1);
     }
+    
+    // Todas as versões jogadas fica localizada na pasta indexes
+    String pathIndexes = getPathRoot().concat("AppData\\Roaming\\.minecraft\\assets\\indexes\\");
+    File fileIndexes = new File(pathIndexes);
+    
+    // Todas as traduções ficam localizadas na pasta objects
+    String pathObjects = getPathRoot().concat("AppData\\Roaming\\.minecraft\\assets\\objects\\");
+    File fileObjects = new File(pathObjects);
+    
     public static int Version(String version) {
         String versionReturn = "0";
         if (version.contains(".")) {
