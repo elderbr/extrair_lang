@@ -35,8 +35,6 @@ import org.json.simple.parser.ParseException;
  */
 public class HomeView extends javax.swing.JFrame {
 
-    private File fileVersionPath;
-    private File fileVersion;
     private File fileLang;
 
     private String pastaLang = null;
@@ -63,13 +61,10 @@ public class HomeView extends javax.swing.JFrame {
             System.err.println("Erro ao carregar o icon!");
         }
 
-        // PEGANDO O DIRETÓRIO PADRÃO DO SISTEMA
-        fileVersionPath = new File(ROOT.concat("AppData\\Roaming\\.minecraft\\assets\\indexes\\"));
-
         progresso.setVisible(false);
 
         cboxLang.setModel(new Langs());
-        cboxLang.setSelectedItem("pt_br");
+        cboxLang.setSelectedItem("pt_BR");
 
         // VERSÕES
         cboxVersion.setModel(new Version());
@@ -491,7 +486,7 @@ public class HomeView extends javax.swing.JFrame {
             // PEGANDO A VERSÃO ESCOLHIDA
             version = Caminho.Version(cboxVersion.getSelectedItem().toString());
             
-            fileVersion = new File(fileVersionPath.getAbsolutePath(), cboxVersion.getSelectedItem().toString().concat(".json"));
+            File fileVersion = new File(Caminho.fileObjects, cboxVersion.getSelectedItem().toString().concat(".json"));
             JSONParser parser = new JSONParser();
             JSONObject jsonPric = (JSONObject) parser.parse(new FileReader(fileVersion));
             JSONObject jsonLang = (JSONObject) parser.parse(jsonPric.get("objects").toString());            
