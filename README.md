@@ -6,15 +6,17 @@ Se você quiser mais opções de tradução para colocar no ***SmartHopper*** es
 Ele gera um arquivo ***.yml*** com todos os itens, basta colocar na pasta **lang** e reiniciar o servidor.
 Se você usa outro programa que precisa da tradução, você pode usar o sistema para consegue os arquivos.
 
+--
+### Download do aplicativo
+[Download do Aplicativo](https://github.com/elderbr/extrair_lang/blob/main/target/ExtrairLang-1.0-SNAPSHOT.jar)
+
 ---
 
 ### Link para o SmartHopper ###
 [smarthopper](https://www.spigotmc.org/resources/separador-inteligente.73646/)
 ---
 ### Tela da aplicação: ###
-
-
-![Download do Extrair Lang](https://github.com/elderbr/extrair_lang/blob/main/target/ExtrairLang-1.0-SNAPSHOT.jar)
+![Tela da Aplicação](https://raw.githubusercontent.com/elderbr/extrair_lang/main/src/main/java/br/com/desktop/elderbr/img/tela.PNG?raw=true)
 
 ---
 >### Como usar:
