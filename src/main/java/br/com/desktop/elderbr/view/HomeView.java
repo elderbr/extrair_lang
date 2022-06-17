@@ -48,7 +48,7 @@ public class HomeView extends javax.swing.JFrame {
     private String hash;
     private String hashPath;
     
-    private File saveLang;
+    private File saveLang = null;
     private File langFile;
 
     public HomeView() {
@@ -499,13 +499,21 @@ public class HomeView extends javax.swing.JFrame {
             
         } catch (FileNotFoundException ex) {
             btnSalvar.setEnabled(false);
-            lbProgresso.setText("");            
+            lbProgresso.setText("");        
+            saveLang = null;
             JOptionPane.showMessageDialog(rootPane, "Essa versão não foi aberta, você precisa abrir nessa versão para poder pegar as informações!!!");
         } catch (IOException | NullPointerException ex) {
             System.err.println("Arquivo não encontrado: " + ex.getMessage());
             Logger.getLogger(Version.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
             Logger.getLogger(Version.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(saveLang == null){
+            btnSalvar.setEnabled(false);
+            lbProgresso.setText("");
+        }else{
+            btnSalvar.setEnabled(true);
+            lbProgresso.setText("");
         }
     }
 
