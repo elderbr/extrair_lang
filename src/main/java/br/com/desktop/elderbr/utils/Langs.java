@@ -5,10 +5,14 @@
 package br.com.desktop.elderbr.utils;
 
 import br.com.desktop.elderbr.interfaces.VGlobal;
+import com.google.common.io.Files;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 
@@ -21,25 +25,24 @@ public class Langs extends DefaultComboBoxModel<String> {
     private String lang = null;
 
     // TODOS OS CÓDIGOS DE LANG DISPONIVÉL PARA A VERSÃO 1.17
-    private List<String>listLang;
-    private File fileVersion;
+    private List<String> listLang;
+    private final File fileLang = new File(Caminho.fileIndexes, "legacy.json");
 
     public Langs() {
-        try {
-            listLang = new ArrayList<>();
-            fileVersion = new File(VGlobal.LANG_INDEX, "1.18.json");
-            try (BufferedReader br = new BufferedReader(new FileReader(fileVersion.getAbsoluteFile()))) {
-                while ((lang = br.readLine()) != null) {
-                    if (lang.contains("realms/lang/")) {
-                        listLang.add(lang.replaceAll("\"realms/lang/", "").replaceAll("[\":{]", "").replace(".json", "").trim());
-                    }
+        String line = null;
+        lang = "pt_br";
+        listLang = new ArrayList<>();        
+        try (BufferedReader reader = Files.newReader(fileLang, Charset.defaultCharset())) {
+            while ((line = reader.readLine()) != null) {
+                if (line.contains("lang/")) {
+                    lang = line.replaceAll("[\"/lang:\\s\\{.]", "");
+                    listLang.add(lang);
                 }
-            } catch (Exception ex) {
-                System.out.println("Erro ao ler a languagem: \nErro: " + ex.getMessage());
             }
-        } catch (Exception e) {
-            System.out.println("Erro ao ler a languagem: \nErro: " + e.getMessage());
-        }        
+        } catch (IOException e) {
+            System.err.println("Erro ao buscar todos os langs!!!\nErro: "+ e.getMessage());
+        }
+        Collections.sort(listLang);
     }
 
     @Override
