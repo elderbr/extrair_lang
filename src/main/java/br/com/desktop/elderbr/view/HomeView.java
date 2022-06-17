@@ -490,11 +490,11 @@ public class HomeView extends javax.swing.JFrame {
 
             // PEGANDO A VERSÃO ESCOLHIDA
             version = Caminho.Version(cboxVersion.getSelectedItem().toString());
-
+            
             fileVersion = new File(fileVersionPath.getAbsolutePath(), cboxVersion.getSelectedItem().toString().concat(".json"));
             JSONParser parser = new JSONParser();
             JSONObject jsonPric = (JSONObject) parser.parse(new FileReader(fileVersion));
-            JSONObject jsonLang = (JSONObject) parser.parse(jsonPric.get("objects").toString());
+            JSONObject jsonLang = (JSONObject) parser.parse(jsonPric.get("objects").toString());            
             // VERIFICA O TIPO DA VERSÃO MAIOR QUE 14 TEM EXTENSÃO JSON
             if (version > 13) {
                 lang = "minecraft/lang/".concat(cboxLang.getSelectedItem().toString().concat(".json"));
