@@ -14,7 +14,7 @@ Se você usa outro programa que precisa da tradução, você pode usar o sistema
 ### Tela da aplicação: ###
 
 
-![Tela da Aplicação](https://github.com/elderbr/extrair_lang/blob/main/src/com/elderbr/mc/img/tela.png?raw=true)
+![Download do Extrair Lang](https://github.com/elderbr/extrair_lang/blob/main/target/ExtrairLang-1.0-SNAPSHOT.jar)
 
 ---
 >### Como usar:
