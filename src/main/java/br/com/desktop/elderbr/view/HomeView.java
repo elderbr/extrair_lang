@@ -21,6 +21,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -35,7 +36,6 @@ import org.json.simple.parser.ParseException;
  */
 public class HomeView extends javax.swing.JFrame {
 
-       
     private SortedMap<String, String> map;
     private File fileSkins;
     private List<String> listSkins;
@@ -43,11 +43,11 @@ public class HomeView extends javax.swing.JFrame {
     private Item item;
     private List<String> listMaterial;
     private int progInt;
-    
+
     private String lang;
     private String hash;
     private String hashPath;
-    
+
     private File saveLang = null;
     private File langFile;
 
@@ -55,7 +55,7 @@ public class HomeView extends javax.swing.JFrame {
         initComponents();
 
         try {// Adicionando o icone            
-            Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("br/com/desktop/elderbr/img/icon_smarthopper.png").toString());
+            Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/img/icon_smarthopper.png"));
             this.setIconImage(icon);
         } catch (Exception e) {
             System.err.println("Erro ao carregar o icon!");
@@ -101,6 +101,7 @@ public class HomeView extends javax.swing.JFrame {
         setBackground(new java.awt.Color(102, 102, 102));
 
         lbIcons.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbIcons.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icon_smarthopper.png"))); // NOI18N
 
         lbTitulo.setFont(new java.awt.Font("Tahoma", 1, 30)); // NOI18N
         lbTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -475,31 +476,31 @@ public class HomeView extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void arquivo() {
-        try {            
+        try {
             File fileVersion = new File(Caminho.fileIndexes, cboxVersion.getSelectedItem().toString().concat(".json"));
-            JSONParser parser = new JSONParser();            
-            
+            JSONParser parser = new JSONParser();
+
             // Abrindo o arquivo escolhido
             JSONObject jsonPric = (JSONObject) parser.parse(new FileReader(fileVersion.getAbsoluteFile()));
-            
+
             // Lendo o arquivo da versão escolhida
-            JSONObject jsonLang = (JSONObject) parser.parse(jsonPric.get("objects").toString());            
-            
+            JSONObject jsonLang = (JSONObject) parser.parse(jsonPric.get("objects").toString());
+
             // Setando a linguagem
             lang = "minecraft/lang/".concat(cboxLang.getSelectedItem().toString().concat(".json").toLowerCase());
             // Selecionando a liguagem no documento
             JSONObject hashJson = (JSONObject) parser.parse(jsonLang.get(lang).toString());
             // Pega o codigo da linguagem
             hash = hashJson.get("hash").toString();
-            
+
             // Nome da pasta onde está o tradução
-            hashPath = hash.substring(0,2);
-            
-            langFile = new File(Caminho.fileObjects+File.separator+hashPath, hash);
-            
+            hashPath = hash.substring(0, 2);
+
+            langFile = new File(Caminho.fileObjects + File.separator + hashPath, hash);
+
         } catch (FileNotFoundException ex) {
             btnSalvar.setEnabled(false);
-            lbProgresso.setText("");        
+            lbProgresso.setText("");
             saveLang = null;
             JOptionPane.showMessageDialog(rootPane, "Essa versão não foi aberta, você precisa abrir nessa versão para poder pegar as informações!!!");
         } catch (IOException | NullPointerException ex) {
@@ -508,10 +509,10 @@ public class HomeView extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(Version.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(saveLang == null){
+        if (saveLang == null) {
             btnSalvar.setEnabled(false);
             lbProgresso.setText("");
-        }else{
+        } else {
             btnSalvar.setEnabled(true);
             lbProgresso.setText("");
         }
