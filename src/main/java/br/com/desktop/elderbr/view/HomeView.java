@@ -319,68 +319,51 @@ public class HomeView extends javax.swing.JFrame {
                 String txt = null;
                 try (BufferedReader ler = Files.newBufferedReader(langFile.toPath(), StandardCharsets.UTF_8)) {
                     while ((txt = ler.readLine()) != null) {
-                        listSkins.add(txt.trim());
 
-                        // ADICIONANDO PROGRESSO
-                        lbProgresso.setText("Arquivo padrão do lang " + txt);
-                        progresso.setValue(progInt);
-                        progInt++;
+                        if (!txt.trim().contains("%")) {
+                            listSkins.add(txt.trim());
+                            // ADICIONANDO PROGRESSO
+                            lbProgresso.setText("Arquivo padrão do lang " + txt);
+                            progresso.setValue(progInt);
+                            progInt++;
+                        }
                     }
                 } catch (IOException e) {
                     System.err.println("Erro ao ler o arquivo >> erro: " + e.getMessage());
                 }
 
-                // LISTA DE MATERIAIS
-                listMaterial = new ArrayList<>();
-                try {
-                    for (Material material : Material.values()) {
-                        if (material.isItem() && !material.isAir()) {
-                            listMaterial.add(material.getKey().getKey());
-                            // ADICIONANDO PROGRESSO
-                            lbProgresso.setText("Arquivo materias " + Item.ToString(material));
-                            progresso.setValue(progInt);
-                            progInt++;
-                        }
-                    }
-                } catch (Exception e) {
-                    System.err.println("Erro ao percorrer os materiais!\n" + e);
-                }
-                progresso.setValue(6001);
-
                 // PESQUISANDO NO ARQUIVO SKINS SE TEM O MATERIAL
                 progInt = 0;
                 progresso.setValue(0);
-                progresso.setMaximum((listSkins.size() + listMaterial.size()));
+                progresso.setMaximum((listSkins.size()));
                 map = new TreeMap<>();
                 String item;
                 String key, value;
                 for (String skins : listSkins) {
-                    for (String materils : listMaterial) {
-                        if (skins.contains("item.minecraft." + materils) || skins.contains("block.minecraft." + materils)) {
+                    if (skins.contains("item.minecraft.") || skins.contains("block.minecraft.")) {
 
-                            item = skins.replaceAll("item.minecraft.", "")
-                                    .replaceAll("block.minecraft.", "").trim();
+                        item = skins.replaceAll("item.minecraft.", "")
+                                .replaceAll("block.minecraft.", "").trim();
 
-                            // PEGANDO A CHAVE PRINCIPAL
-                            key = item.substring(0, item.indexOf(":"))
-                                    .replaceAll(".effect.", " ")
-                                    .replaceAll("\"", "")
-                                    .replaceAll("[._]", " ")
-                                    .replaceAll(" potion ", " ");
-                            // PEGANDO A TRADUÇÃO
-                            value = StringEscapeUtils.unescapeJava(item.substring(item.indexOf(": ") + 1, item.length())).replaceAll(",", "").trim();
+                        // PEGANDO A CHAVE PRINCIPAL
+                        key = item.substring(0, item.indexOf(":"))
+                                .replaceAll(".effect.", " ")
+                                .replaceAll("\"", "")
+                                .replaceAll("[._]", " ")
+                                .replaceAll(" potion ", " ");
+                        // PEGANDO A TRADUÇÃO
+                        value = StringEscapeUtils.unescapeJava(item.substring(item.indexOf(": ") + 1, item.length())).replaceAll(",", "").trim();
 
-                            // SALVANDO NO MAPS
-                            map.put(key, value);
+                        // SALVANDO NO MAPS
+                        map.put(key, value);
 
-                            // ADICIONANDO PROGRESSO
-                            lbProgresso.setText("Comparando arquivos " + key);
-                            progresso.setValue(progInt);
-                            progInt++;
-                        }
+                        // ADICIONANDO PROGRESSO
+                        lbProgresso.setText("Comparando arquivos " + key);
+                        progresso.setValue(progInt);
+                        progInt++;
                     }
                 }
-                progresso.setValue((listSkins.size() + listMaterial.size()));
+                progresso.setValue((listSkins.size()));
 
                 // SALVO O ARQUIVO
                 progInt = 0;
