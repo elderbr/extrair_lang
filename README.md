@@ -8,7 +8,7 @@ Se você usa outro programa que precisa da tradução, você pode usar o sistema
 
 --
 ### Download do aplicativo
-[Download do Aplicativo](https://github.com/elderbr/extrair_lang/raw/main/target/ExtrairLang-1.2.jar)
+[Download do Aplicativo](https://github.com/elderbr/extrair_lang/blob/main/target/ExtrairLang-1.2.jar)
 
 ---
 
