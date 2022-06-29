@@ -10,6 +10,9 @@ Se você usa outro programa que precisa da tradução, você pode usar o sistema
 ### Download do aplicativo
 [Download do Aplicativo](https://raw.githubusercontent.com/elderbr/extrair_lang/main/target/ExtrairLang-1.2.jar)
 
+### Vídeo demostrativo
+[Vídeo tutorial](https://youtu.be/qMip8PTg8Wc)
+
 ---
 
 ### Link para o SmartHopper ###
@@ -20,6 +23,7 @@ Se você usa outro programa que precisa da tradução, você pode usar o sistema
 
 ---
 >### Como usar:
+#### Deve ser usado onde o jogo do Minecraft esteja instalado, e a versão desejada precisa ter sido aberto pelo menos uma vez!
 >1. Escolha o código da linguagem desejada, depois a versão.
 >2. No botão ***Abrir*** escolha a pasta onde deseja salvar a extração. Após ter escolhido a local o botão ***Salvar*** será liberado.
->3. Ao clicar no ***Botão Salvar*** vai ser exibido o carregando, pronto o arquivo está salvo com o nome do código escolhido. Nesse exemplo usamos o **pt_br** o arquivo vai ser salvo ***pt_br.yml*** na pasta escolhida.
+>3. Ao clicar no ***Botão Salvar*** vai ser exibido o carregando, pronto o arquivo está salvo com o nome do código escolhido. Nesse exemplo usamos o **pt_br** o arquivo vai ser salvo ***pt_br_versão.yml*** na pasta escolhida.
