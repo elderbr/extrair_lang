@@ -21,10 +21,9 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.bukkit.Material;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -64,7 +63,7 @@ public class HomeView extends javax.swing.JFrame {
         progresso.setVisible(false);
 
         cboxLang.setModel(new Langs());
-        cboxLang.setSelectedItem("pt_BR");
+        cboxLang.setSelectedItem("pt_br");
 
         // VERSÕES
         cboxVersion.setModel(new Version());

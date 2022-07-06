@@ -6,9 +6,11 @@ package br.com.desktop.elderbr.utils;
 
 import com.google.common.io.Files;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,22 +25,19 @@ public class Langs extends DefaultComboBoxModel<String> {
     private String lang = null;
 
     // TODOS OS CÓDIGOS DE LANG DISPONIVÉL PARA A VERSÃO 1.17
-    private List<String> listLang;
-    private final File fileLang = new File(Caminho.fileIndexes, "legacy.json");
+    private List<String> listLang;    
+    private final File FILE_LANG = new File(getClass().getResource("/langs.txt").getPath());
 
     public Langs() {
         String line = null;
         lang = "pt_br";
-        listLang = new ArrayList<>();        
-        try (BufferedReader reader = Files.newReader(fileLang, Charset.defaultCharset())) {
+        listLang = new ArrayList<>();
+        try (BufferedReader reader = Files.newReader(FILE_LANG, StandardCharsets.UTF_8)) {
             while ((line = reader.readLine()) != null) {
-                if (line.contains("lang/")) {
-                    lang = line.replaceAll("[\"/lang:\\s\\{.]", "");
-                    listLang.add(lang);
-                }
+                listLang.add(line);
             }
         } catch (IOException e) {
-            System.err.println("Erro ao buscar todos os langs!!!\nErro: "+ e.getMessage());
+            System.err.println("Erro ao buscar todos os langs!!!\nErro: " + e.getMessage());
         }
         Collections.sort(listLang);
     }
