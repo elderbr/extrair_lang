@@ -1,5 +1,3 @@
-_es
-_ie
 b_b
 b_u
 c_es
