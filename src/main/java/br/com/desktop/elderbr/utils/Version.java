@@ -10,11 +10,11 @@ import javax.swing.DefaultComboBoxModel;
  * @author ElderBR
  */
 public class Version extends DefaultComboBoxModel<String> {
-     private final String root = Caminho.getPathRoot();
-    private File fileVersionList = new File(root.concat("AppData\\Roaming\\.minecraft\\assets\\indexes"));
+
+    private final File fileVersionList = Caminho.fileIndexes;
 
     private String lang;
-    private double version;
+    public static double VALUE;
     private List<String> listVersion;
 
     public Version() {
@@ -23,8 +23,8 @@ public class Version extends DefaultComboBoxModel<String> {
             listVersion = new ArrayList<>();
             for (File files : fileVersionList.listFiles()) {
                 lang = files.getName().replaceAll(".json", "").trim();
-                version = Caminho.Version(lang);
-                if(version > 7){
+                VALUE = Caminho.Version(lang);
+                if(VALUE > 12){
                     listVersion.add(lang);
                 }
             }
