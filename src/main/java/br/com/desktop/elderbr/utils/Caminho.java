@@ -42,7 +42,7 @@ public interface Caminho {
 
     // Rescrevendo o arquivo json formatando
     public static boolean ESCREVER_JSON(File file) {
-        Gson gson = new Gson().newBuilder().setPrettyPrinting().create();
+        Gson gson = new Gson().newBuilder().setPrettyPrinting().create();        
         try {
             JSONObject jsonPric = (JSONObject) new JSONParser().parse(new FileReader(file.getAbsoluteFile()));
             try (BufferedWriter writer = Files.newBufferedWriter(new File(file.getName()).toPath(), StandardCharsets.UTF_8)) {

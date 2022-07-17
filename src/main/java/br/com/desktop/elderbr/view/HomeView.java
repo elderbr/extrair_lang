@@ -49,6 +49,7 @@ public class HomeView extends javax.swing.JFrame {
 
     private File saveLang = null;
     private File langFile;
+    private String version;
 
     public HomeView() {
         initComponents();
@@ -60,14 +61,14 @@ public class HomeView extends javax.swing.JFrame {
             System.err.println("Erro ao carregar o icon!");
         }
 
-        progresso.setVisible(false);
-
-        cboxLang.setModel(new Langs());
-        cboxLang.setSelectedItem("pt_br");
+        progresso.setVisible(false);       
 
         // VERSÕES
         cboxVersion.setModel(new Version());
         cboxVersion.setSelectedIndex(0);
+        
+        cboxLang.setModel(new Langs());
+        cboxLang.setSelectedItem("pt_br");
     }
 
     /**
@@ -108,7 +109,7 @@ public class HomeView extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 153));
 
-        cboxLang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboxLang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "pt_br", "pt_pt" }));
         cboxLang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboxLangActionPerformed(evt);
@@ -267,7 +268,7 @@ public class HomeView extends javax.swing.JFrame {
         if (evt.getModifiers() < 1) {
             return;
         }
-        arquivo();
+        //arquivo();
     }//GEN-LAST:event_cboxLangActionPerformed
 
     private void cboxVersionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxVersionActionPerformed
@@ -459,7 +460,13 @@ public class HomeView extends javax.swing.JFrame {
 
     private void arquivo() {
         try {
-            File fileVersion = new File(Caminho.fileIndexes, cboxVersion.getSelectedItem().toString().concat(".json"));
+            
+            lang = cboxLang.getSelectedItem().toString();
+            version = cboxVersion.getSelectedItem().toString();
+            
+            String langJson = version.concat(".json");
+            
+            File fileVersion = new File(Caminho.fileIndexes, langJson);
             JSONParser parser = new JSONParser();
 
             // Abrindo o arquivo escolhido
@@ -467,11 +474,9 @@ public class HomeView extends javax.swing.JFrame {
 
             // Lendo o arquivo da versão escolhida
             JSONObject jsonLang = (JSONObject) parser.parse(jsonPric.get("objects").toString());
-
-            // Setando a linguagem
-            lang = "minecraft/lang/".concat(cboxLang.getSelectedItem().toString().concat(".json").toLowerCase());
+            
             // Selecionando a liguagem no documento
-            JSONObject hashJson = (JSONObject) parser.parse(jsonLang.get(lang).toString());
+            JSONObject hashJson = (JSONObject) parser.parse(jsonLang.get(String.format("minecraft/lang/%s.json", lang)).toString());
             // Pega o codigo da linguagem
             hash = hashJson.get("hash").toString();
 
