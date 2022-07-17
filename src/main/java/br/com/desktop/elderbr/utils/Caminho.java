@@ -1,6 +1,8 @@
 package br.com.desktop.elderbr.utils;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.filechooser.FileSystemView;
 
 /**
@@ -21,6 +23,8 @@ public interface Caminho {
     // Todas as traduções ficam localizadas na pasta objects
     String pathObjects = getPathRoot().concat("AppData\\Roaming\\.minecraft\\assets\\objects\\");
     File fileObjects = new File(pathObjects);
+    
+    List<String> LIST_VERSION = new ArrayList<>();
     
     public static int Version(String version) {
         String versionReturn = "0";
