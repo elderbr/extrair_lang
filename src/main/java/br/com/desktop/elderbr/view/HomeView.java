@@ -490,6 +490,8 @@ public class HomeView extends javax.swing.JFrame {
             Logger.getLogger(Version.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
             Logger.getLogger(Version.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(rootPane, "Linguagem não disponivél para essa versão!!!");
+            return;
         }
         if (saveLang == null) {
             btnSalvar.setEnabled(false);
